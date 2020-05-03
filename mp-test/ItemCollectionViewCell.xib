@@ -16,7 +16,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="120" height="120"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="IQT-bN-Ac3">
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="IQT-bN-Ac3">
                         <rect key="frame" x="0.0" y="0.0" width="120" height="120"/>
                     </imageView>
                 </subviews>
@@ -29,6 +29,9 @@
             </constraints>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <size key="customSize" width="120" height="120"/>
+            <connections>
+                <outlet property="imageView" destination="IQT-bN-Ac3" id="ynw-w6-GkM"/>
+            </connections>
             <point key="canvasLocation" x="188.40579710144928" y="164.73214285714286"/>
         </collectionViewCell>
     </objects>
