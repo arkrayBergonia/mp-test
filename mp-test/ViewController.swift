@@ -16,14 +16,13 @@ struct Item {
 class ViewController: UIViewController {
     
     var myCollectionView: UICollectionView!
-    var imageArray=[UIImage]()
+    var imageArray = [UIImage]()
     
     let cellIdentifier = "ItemCollectionViewCell"
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupCollectionView()
-       
     }
 
     override func viewWillLayoutSubviews() {
@@ -44,6 +43,8 @@ class ViewController: UIViewController {
         self.view.addSubview(myCollectionView)
         
         myCollectionView.autoresizingMask = UIView.AutoresizingMask(rawValue: UIView.AutoresizingMask.RawValue(UInt8(UIView.AutoresizingMask.flexibleWidth.rawValue) | UInt8(UIView.AutoresizingMask.flexibleHeight.rawValue)))
+        
+        self.fetchPhotos()
     }
     
 }
@@ -80,4 +81,42 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
     
 }
 
+extension ViewController {
+    
+    private func fetchPhotos(){
+        imageArray = []
+        
+        DispatchQueue.global(qos: .background).async {
+            print("This is run on the background queue")
+            let imgManager = PHImageManager.default()
+            
+            let requestOptions = PHImageRequestOptions()
+            requestOptions.isSynchronous = true
+            requestOptions.deliveryMode = .highQualityFormat
+            
+            let fetchOptions=PHFetchOptions()
+            fetchOptions.sortDescriptors = [NSSortDescriptor(key:"creationDate", ascending: false)]
+            
+            let fetchResult: PHFetchResult = PHAsset.fetchAssets(with: .image, options: fetchOptions)
+            print(fetchResult)
+            print(fetchResult.count)
+            if fetchResult.count > 0 {
+                for i in 0..<fetchResult.count{
+                    imgManager.requestImage(for: fetchResult.object(at: i) as PHAsset, targetSize: CGSize(width:500, height: 500),contentMode: .aspectFill, options: requestOptions, resultHandler: { (image, error) in
+                        self.imageArray.append(image!)
+                    })
+                }
+            } else {
+                print("You got no photos.")
+            }
+            print("imageArray count: \(self.imageArray.count)")
+            
+            DispatchQueue.main.async {
+                print("This is run on the main queue, after the previous code in outer block")
+                self.myCollectionView.reloadData()
+            }
+        }
+    }
+    
+}
 
