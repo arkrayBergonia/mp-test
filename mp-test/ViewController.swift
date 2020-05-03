@@ -14,92 +14,70 @@ struct Item {
 }
 
 class ViewController: UIViewController {
-
-    @IBOutlet weak var collectionView: UICollectionView!
     
-    //Array of PHAsset type for storing photos
-    var images = [PHAsset]()
+    var myCollectionView: UICollectionView!
+    var imageArray=[UIImage]()
     
-    var collectionViewFlowLayout: UICollectionViewFlowLayout!
     let cellIdentifier = "ItemCollectionViewCell"
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        setupCollectionView()
+        self.setupCollectionView()
+       
     }
 
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        
-        self.setupCollectionViewItemSize()
-        self.getImages()
+        myCollectionView.collectionViewLayout.invalidateLayout()
     }
     
     private func setupCollectionView() {
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        let nib = UINib(nibName: "ItemCollectionViewCell", bundle: nil)
-        collectionView.register(nib, forCellWithReuseIdentifier: cellIdentifier)
-    }
-
-    private func setupCollectionViewItemSize() {
-        if collectionViewFlowLayout == nil {
-            let numberOfItemPerRow: CGFloat = 3
-            let lineSpacing: CGFloat = 5
-            let interItemSpacing: CGFloat = 5
-            
-            let width = (collectionView.frame.width - (numberOfItemPerRow - 1) * interItemSpacing) / numberOfItemPerRow
-            let height = width
-            
-            collectionViewFlowLayout = UICollectionViewFlowLayout()
-            
-            collectionViewFlowLayout.itemSize = CGSize(width: width, height: height)
-            collectionViewFlowLayout.sectionInset = UIEdgeInsets.zero
-            collectionViewFlowLayout.scrollDirection = .vertical
-            collectionViewFlowLayout.minimumLineSpacing = lineSpacing
-            collectionViewFlowLayout.minimumInteritemSpacing = interItemSpacing
-            
-            collectionView.setCollectionViewLayout(collectionViewFlowLayout, animated: true)
-        }
+        let layout = UICollectionViewFlowLayout()
+        let nib = UINib(nibName: cellIdentifier, bundle: nil)
+        
+        myCollectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
+        myCollectionView.delegate = self
+        myCollectionView.dataSource = self
+        myCollectionView.backgroundColor = UIColor.white
+        myCollectionView.register(nib, forCellWithReuseIdentifier: cellIdentifier)
+        
+        self.view.addSubview(myCollectionView)
+        
+        myCollectionView.autoresizingMask = UIView.AutoresizingMask(rawValue: UIView.AutoresizingMask.RawValue(UInt8(UIView.AutoresizingMask.flexibleWidth.rawValue) | UInt8(UIView.AutoresizingMask.flexibleHeight.rawValue)))
     }
     
-    private func getImages() {
-        let assets = PHAsset.fetchAssets(with: PHAssetMediaType.image, options: nil)
-        assets.enumerateObjects({ (object, count, stop) in
-           // self.cameraAssets.add(object)
-            self.images.append(object)
-        })
-
-        //In order to get latest image first, we just reverse the array
-        self.images.reverse()
-
-        // To show photos, I have taken a UICollectionView
-        self.collectionView.reloadData()
-    }
 }
 
-extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource  {
+extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
+    //MARK: CollectionView
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return images.count
+        return imageArray.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ItemCollectionViewCell", for: indexPath) as! ItemCollectionViewCell
-        let asset = images[indexPath.row]
-        let manager = PHImageManager.default()
-        if cell.tag != 0 {
-                manager.cancelImageRequest(PHImageRequestID(cell.tag))
-            }
-        cell.tag = Int(manager.requestImage(for: asset,
-                                                targetSize: CGSize(width: 120.0, height: 120.0),
-                                                contentMode: .aspectFill,
-                                                options: nil) { (result, _) in
-                                                    cell.imageView.image = result
-            })
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as! ItemCollectionViewCell
+        cell.imageView.image=imageArray[indexPath.item]
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print(indexPath)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width = collectionView.frame.width
+        return CGSize(width: width/3 - 1, height: width/3 - 1)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 1.0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 1.0
+    }
     
 }
+
+
