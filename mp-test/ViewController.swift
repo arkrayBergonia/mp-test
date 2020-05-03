@@ -31,6 +31,7 @@ class ViewController: UIViewController {
     
     var collectionViewFlowLayout: UICollectionViewFlowLayout!
     let cellIdentifier = "ItemCollectionViewCell"
+    let viewImageSegueIdentifier = "viewImageSegueIdentifier"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,6 +44,17 @@ class ViewController: UIViewController {
         
         self.setupCollectionViewItemSize()
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let item = sender as! Item
+        
+        if segue.identifier == viewImageSegueIdentifier {
+            if let vc = segue.destination as? ImageViewController {
+                vc.imageName = item.imageName
+            }
+        }
+    }
+    
     
     private func setupCollectionView() {
         collectionView.delegate = self
@@ -87,5 +99,9 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource  
         return cell
     }
     
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let item = items[indexPath.item]
+        
+        performSegue(withIdentifier: viewImageSegueIdentifier, sender: item)
+    }
 }
