@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Photos
 
 struct Item {
     var imageName: String
@@ -16,18 +17,8 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var collectionView: UICollectionView!
     
-    var items: [Item] = [Item(imageName: "1"),
-                         Item(imageName: "2"),
-                         Item(imageName: "3"),
-                         Item(imageName: "4"),
-                         Item(imageName: "5"),
-                         Item(imageName: "6"),
-                         Item(imageName: "7"),
-                         Item(imageName: "8"),
-                         Item(imageName: "9"),
-                         Item(imageName: "10"),
-                         Item(imageName: "11"),
-                         Item(imageName: "12")]
+    //Array of PHAsset type for storing photos
+    var images = [PHAsset]()
     
     var collectionViewFlowLayout: UICollectionViewFlowLayout!
     let cellIdentifier = "ItemCollectionViewCell"
@@ -42,6 +33,7 @@ class ViewController: UIViewController {
         super.viewWillLayoutSubviews()
         
         self.setupCollectionViewItemSize()
+        self.getImages()
     }
     
     private func setupCollectionView() {
@@ -71,19 +63,41 @@ class ViewController: UIViewController {
             collectionView.setCollectionViewLayout(collectionViewFlowLayout, animated: true)
         }
     }
+    
+    private func getImages() {
+        let assets = PHAsset.fetchAssets(with: PHAssetMediaType.image, options: nil)
+        assets.enumerateObjects({ (object, count, stop) in
+           // self.cameraAssets.add(object)
+            self.images.append(object)
+        })
+
+        //In order to get latest image first, we just reverse the array
+        self.images.reverse()
+
+        // To show photos, I have taken a UICollectionView
+        self.collectionView.reloadData()
+    }
 }
 
 extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource  {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return items.count
+        return images.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as! ItemCollectionViewCell
-        
-        cell.imageView.image = UIImage(named: items[indexPath.item].imageName)
-        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ItemCollectionViewCell", for: indexPath) as! ItemCollectionViewCell
+        let asset = images[indexPath.row]
+        let manager = PHImageManager.default()
+        if cell.tag != 0 {
+                manager.cancelImageRequest(PHImageRequestID(cell.tag))
+            }
+        cell.tag = Int(manager.requestImage(for: asset,
+                                                targetSize: CGSize(width: 120.0, height: 120.0),
+                                                contentMode: .aspectFill,
+                                                options: nil) { (result, _) in
+                                                    cell.imageView.image = result
+            })
         return cell
     }
     
