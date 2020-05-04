@@ -151,5 +151,19 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource  
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+           switch mMode {
+           case .view:
+               break
+           case .select:
+               dictionarySelectedIndecPath[indexPath] = true
+           }
+       }
+       
+       func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+           if mMode == .select {
+               dictionarySelectedIndecPath[indexPath] = false
+           }
+       }
     
 }
