@@ -19,20 +19,42 @@
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="IQT-bN-Ac3">
                         <rect key="frame" x="0.0" y="0.0" width="120" height="120"/>
                     </imageView>
+                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ScS-uB-Plh">
+                        <rect key="frame" x="0.0" y="0.0" width="120" height="120"/>
+                        <color key="backgroundColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
+                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_check" translatesAutoresizingMaskIntoConstraints="NO" id="Zve-1h-bi2">
+                        <rect key="frame" x="82" y="82" width="30" height="30"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="30" id="PZh-Kh-0Nq"/>
+                            <constraint firstAttribute="width" constant="30" id="vPX-qm-eBq"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
             </view>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="IQT-bN-Ac3" secondAttribute="trailing" id="Bd6-Gd-4US"/>
                 <constraint firstAttribute="bottom" secondItem="IQT-bN-Ac3" secondAttribute="bottom" id="Pln-0n-lOA"/>
+                <constraint firstItem="ScS-uB-Plh" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="REl-gF-ifM"/>
+                <constraint firstItem="ScS-uB-Plh" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="U67-J1-cUP"/>
+                <constraint firstAttribute="trailing" secondItem="ScS-uB-Plh" secondAttribute="trailing" id="URN-7q-RZ3"/>
+                <constraint firstAttribute="bottom" secondItem="ScS-uB-Plh" secondAttribute="bottom" id="WAC-xO-qIw"/>
+                <constraint firstItem="ZTg-uK-7eu" firstAttribute="bottom" secondItem="Zve-1h-bi2" secondAttribute="bottom" constant="8" id="fim-up-MaU"/>
                 <constraint firstItem="IQT-bN-Ac3" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="k1g-mx-Xe5"/>
                 <constraint firstItem="IQT-bN-Ac3" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="k8n-8l-Eel"/>
+                <constraint firstItem="ZTg-uK-7eu" firstAttribute="trailing" secondItem="Zve-1h-bi2" secondAttribute="trailing" constant="8" id="mLR-Nt-tBT"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <size key="customSize" width="120" height="120"/>
             <connections>
+                <outlet property="highlightIndicator" destination="ScS-uB-Plh" id="kEY-Vw-IJP"/>
                 <outlet property="imageView" destination="IQT-bN-Ac3" id="ynw-w6-GkM"/>
+                <outlet property="selectIndicator" destination="Zve-1h-bi2" id="IBE-p1-Fha"/>
             </connections>
             <point key="canvasLocation" x="188.40579710144928" y="164.73214285714286"/>
         </collectionViewCell>
     </objects>
+    <resources>
+        <image name="ic_check" width="30" height="30"/>
+    </resources>
 </document>

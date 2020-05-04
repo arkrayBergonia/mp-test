@@ -49,11 +49,42 @@
                     <navigationItem key="navigationItem" id="ylj-ND-rf0"/>
                     <connections>
                         <outlet property="collectionView" destination="W0q-ZU-tML" id="mBi-oJ-xUr"/>
+                        <segue destination="pYl-U7-zBB" kind="show" identifier="viewImageSegueIdentifier" id="vPR-DA-uJz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1047.8260869565217" y="126.5625"/>
+        </scene>
+        <!--Image View Controller-->
+        <scene sceneID="b5N-qu-xiB">
+            <objects>
+                <viewController id="pYl-U7-zBB" customClass="ImageViewController" customModule="mp_test" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="3BU-v8-auc">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ScA-DZ-1Q6">
+                                <rect key="frame" x="0.0" y="88" width="414" height="808"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="ScA-DZ-1Q6" secondAttribute="bottom" id="6uF-5M-pYd"/>
+                            <constraint firstItem="ScA-DZ-1Q6" firstAttribute="top" secondItem="yi6-hp-sbv" secondAttribute="top" id="8Yw-U6-wqz"/>
+                            <constraint firstItem="yi6-hp-sbv" firstAttribute="trailing" secondItem="ScA-DZ-1Q6" secondAttribute="trailing" id="mhB-ii-Fag"/>
+                            <constraint firstItem="ScA-DZ-1Q6" firstAttribute="leading" secondItem="yi6-hp-sbv" secondAttribute="leading" id="rP1-8L-GZC"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="yi6-hp-sbv"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="QFu-lw-Agm"/>
+                    <connections>
+                        <outlet property="imageView" destination="ScA-DZ-1Q6" id="0J1-F7-OQT"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bR3-Ju-HUY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1826" y="127"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="gpi-G9-lb7">
