@@ -37,6 +37,8 @@ class ViewController: UIViewController {
     var collectionViewFlowLayout: UICollectionViewFlowLayout!
     let cellIdentifier = "ItemCollectionViewCell"
     
+    var dictionarySelectedIndecPath: [IndexPath: Bool] = [:]
+    
     var mMode: Mode = .view {
         didSet {
             switch mMode {
