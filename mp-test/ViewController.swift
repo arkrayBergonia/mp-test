@@ -36,6 +36,7 @@ class ViewController: UIViewController {
     
     var collectionViewFlowLayout: UICollectionViewFlowLayout!
     let cellIdentifier = "ItemCollectionViewCell"
+    let viewImageSegueIdentifier = "viewImageSegueIdentifier"
     
     var dictionarySelectedIndecPath: [IndexPath: Bool] = [:]
     
@@ -83,6 +84,17 @@ class ViewController: UIViewController {
         
         self.setupCollectionViewItemSize()
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let item = sender as! Item
+        
+        if segue.identifier == viewImageSegueIdentifier {
+            if let vc = segue.destination as? ImageViewController {
+                vc.imageName = item.imageName
+            }
+        }
+    }
+    
     
     private func setupCollectionView() {
         collectionView.delegate = self
@@ -152,18 +164,18 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource  
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-           switch mMode {
-           case .view:
-               break
-           case .select:
-               dictionarySelectedIndecPath[indexPath] = true
-           }
-       }
-       
-       func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-           if mMode == .select {
-               dictionarySelectedIndecPath[indexPath] = false
-           }
-       }
+        switch mMode {
+        case .view:
+            let item = items[indexPath.item]
+            performSegue(withIdentifier: viewImageSegueIdentifier, sender: item)
+        case .select:
+            dictionarySelectedIndecPath[indexPath] = true
+        }
+    }
     
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        if mMode == .select {
+            dictionarySelectedIndecPath[indexPath] = false
+        }
+    }
 }
